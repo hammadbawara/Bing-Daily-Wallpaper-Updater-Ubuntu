@@ -1,13 +1,14 @@
 import os
 import sys
 import WallpaperManager as wm
+from termcolor import colored
 
 # checking operating system if it is linux then use linux then run the script 
 if os.name != 'posix':
     print(colored('[-] This program is only made for linux', 'red'))
     exit()
 
-# checking if Desktop enviroment is gnome then run the script
+# checking if Desktop environment is gnome then run the script
 if os.getenv('DESKTOP_SESSION') != 'ubuntu':
     print(colored('[-] This program is not tested for this distro.', 'red'))
     exit()
@@ -31,7 +32,7 @@ if args[1] == '-h' or args[1] == '--help':
 elif args[1] == 'download' or args[1] == '-d':
     wm.download()
 
-elif args[1] ==  '-ds' or args[1] == 'download-set' or args[1] == 'update-wallpaper' or args[1] == '-uw':
+elif args[1] == '-ds' or args[1] == 'download-set' or args[1] == 'update-wallpaper' or args[1] == '-uw':
     file_name = wm.download()
     wm.set_wallpaper(file_name)
 
