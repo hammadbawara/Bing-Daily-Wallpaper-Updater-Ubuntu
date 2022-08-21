@@ -71,12 +71,10 @@ def set_wallpaper(wallpaper_file_name : str):
     # For Light Theme
     os.system(f"gsettings set org.gnome.desktop.background picture-uri 'file://{wallpaper_image_path}'")
 
-    print("WALLPAPER SET : " + wallpaper_file_name)
+    print(colored("WALLPAPER SET : " + wallpaper_file_name, "green"))
 
     with open(WALLPAPER_RECORD_FILE, "w") as f:
         f.write(wallpaper_file_name)
-    
-    print(colored("\n------ WALLPAPER SET ------", "green"))
 
 def set_random():
     wallpapers = os.listdir(WALLPAPER_FOLDER_PATH)
@@ -86,9 +84,16 @@ def set_random():
 def set_next_wallpaper(previous = False):
     if not os.path.isfile(WALLPAPER_RECORD_FILE):
         print(colored("CURRENT WALLPAPER DOES NOT EXIST", "red"))
+        set_latest_wallpaper()
+        return
 
     with open(WALLPAPER_RECORD_FILE) as f:
         current_wallpaper = f.readline()
+    
+    if current_wallpaper == "":
+        print(colored("CURRENT WALLPAPER DOES NOT EXIST", "red"))
+        set_latest_wallpaper()
+        return
 
     wallpapers_list = os.listdir(WALLPAPER_FOLDER_PATH)
 
@@ -97,8 +102,10 @@ def set_next_wallpaper(previous = False):
         if not wallpaper.endswith(".jpg") or wallpaper.endswith(".JPG"):
             wallpapers_list.pop(index)
 
+    is_current_wallpaper_found = False
     for index, wallpaper in enumerate(wallpapers_list):
         if wallpaper == current_wallpaper:
+            is_current_wallpaper_found = True
             if previous == True:
                 if index == 0:
                     print(colored("THERE IS NO PREVIOUS WALLPAPER", "blue"))
@@ -111,3 +118,21 @@ def set_next_wallpaper(previous = False):
                 else:
                     set_wallpaper(wallpapers_list[index+1])
                     break
+
+    if not is_current_wallpaper_found:
+        print(colored("CURRENT WALLPAPER DOES NOT EXIST", "red"))
+        if len(wallpapers_list) > 0:
+            set_latest_wallpaper()
+
+def set_latest_wallpaper():
+    wallpapers_list = os.listdir(WALLPAPER_FOLDER_PATH)
+
+    # removing other files
+    for index, wallpaper in enumerate(wallpapers_list):
+        if not wallpaper.endswith(".jpg") or wallpaper.endswith(".JPG"):
+            wallpapers_list.pop(index)
+
+    if len(wallpapers_list) > 0:
+        set_wallpaper(wallpapers_list[0])
+    else:
+        print(colored("THERE IS NO DOWNLOADED WALLPAPER", "blue"))
