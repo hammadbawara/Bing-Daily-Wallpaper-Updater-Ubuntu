@@ -4,6 +4,7 @@ import os
 from tqdm import tqdm
 from termcolor import colored
 import random
+import shutil
 
 # Global Variables
 FOLDER_NAME = "wallpapers"
@@ -58,7 +59,14 @@ def download():
     return wallpaper_file_name
 
 def set_wallpaper(wallpaper_file_name : str):
-    os.system(f"gsettings set org.gnome.desktop.background picture-uri 'file://{os.getcwd()}/{FOLDER_NAME}/{wallpaper_file_name}'")
+    wallpaper_image_path = f'{os.getcwd()}/{FOLDER_NAME}/{wallpaper_file_name}'
+
+    # For Dark Theme
+    os.system(f"gsettings set org.gnome.desktop.background picture-uri-dark 'file://{wallpaper_image_path}'")
+
+    # For Light Theme
+    os.system(f"gsettings set org.gnome.desktop.background picture-uri 'file://{wallpaper_image_path}'")
+    
     print(colored("\n------ WALLPAPER SET ------", "green"))
 
 def set_random():

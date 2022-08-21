@@ -15,6 +15,8 @@ if os.getenv('DESKTOP_SESSION') != 'ubuntu':
 args = sys.argv
 
 if len(args) == 1:
+    file_name = wm.download()
+    wm.set_wallpaper(file_name)
     exit()
 
 if args[1] == '-h' or args[1] == '--help':
