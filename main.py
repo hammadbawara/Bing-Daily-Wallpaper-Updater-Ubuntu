@@ -23,6 +23,8 @@ if args[1] == '-h' or args[1] == '--help':
     print("-d, download  -  Downloads the wallpaper the today wallpaper")
     print("-ds, download-set, update-wallpaper, -uw -  Downloads and sets the wallpaper the today wallpaper")
     print("-sr, set-random -  Sets random wallpaper on Desktop")
+    print("-next, next -  Sets next wallpaper on Desktop")
+    print("-prev, previous -  Sets previous wallpaper on Desktop")
     exit()
 
 elif args[1] == 'download' or args[1] == '-d':
@@ -34,6 +36,12 @@ elif args[1] ==  '-ds' or args[1] == 'download-set' or args[1] == 'update-wallpa
 
 elif args[1] == 'set-random' or args[1] == '-sr':
     wm.set_random()
+
+elif args[1] == 'next' or args[1] == '-next':
+    wm.set_next_wallpaper()
+
+elif args[1] == 'prev' or args[1] == "previous" or args[1] == '-prev':
+    wm.set_next_wallpaper(True)
 
 else:
     print("option not found")
