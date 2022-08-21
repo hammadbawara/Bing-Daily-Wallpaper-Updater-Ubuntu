@@ -7,10 +7,10 @@ import random
 import shutil
 
 # Global Variables
-FOLDER_NAME = "wallpapers"
+WALLPAPER_FOLDER_PATH = f"/home/{os.getlogin()}/.wallpapers"
 
-if not os.path.isdir(FOLDER_NAME):
-    os.mkdir(FOLDER_NAME)
+if not os.path.isdir(WALLPAPER_FOLDER_PATH):
+    os.mkdir(WALLPAPER_FOLDER_PATH)
 
 
 def download():
@@ -41,15 +41,15 @@ def download():
     wallpaper_file_name = response['start_date'] + ".jpg"
 
     #check if wallpaper already exists
-    global FOLDER_NAME
-    if os.path.isfile(f'{FOLDER_NAME}/{wallpaper_file_name}'):
+    global WALLPAPER_FOLDER_PATH
+    if os.path.isfile(f'{WALLPAPER_FOLDER_PATH}/{wallpaper_file_name}'):
         print(colored("\n------ WALLPAPER ALREADY EXISTS ------", "red"))
         return wallpaper_file_name
     
     # Downloading the wallpaper
     with requests.get(response["url"], stream=True) as r:
         r.raise_for_status()
-        with open (f'{FOLDER_NAME}/{wallpaper_file_name}', "wb") as image_file:
+        with open (f'{WALLPAPER_FOLDER_PATH}/{wallpaper_file_name}', "wb") as image_file:
             for chunk in tqdm(r.iter_content(chunk_size=1024)):
                 image_file.write(chunk)
                 image_file.flush()
@@ -59,7 +59,7 @@ def download():
     return wallpaper_file_name
 
 def set_wallpaper(wallpaper_file_name : str):
-    wallpaper_image_path = f'{os.getcwd()}/{FOLDER_NAME}/{wallpaper_file_name}'
+    wallpaper_image_path = f'{WALLPAPER_FOLDER_PATH}/{wallpaper_file_name}'
 
     # For Dark Theme
     os.system(f"gsettings set org.gnome.desktop.background picture-uri-dark 'file://{wallpaper_image_path}'")
@@ -70,7 +70,7 @@ def set_wallpaper(wallpaper_file_name : str):
     print(colored("\n------ WALLPAPER SET ------", "green"))
 
 def set_random():
-    wallpapers = os.listdir(FOLDER_NAME)
+    wallpapers = os.listdir(WALLPAPER_FOLDER_PATH)
     wallpaper = wallpapers[random.randint(0, len(wallpapers)-1)]
     set_wallpaper(wallpaper)
     
