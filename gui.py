@@ -87,8 +87,10 @@ class UpdateWallpaper(QThread):
             wallpaper = WallpaperManager.download(i)
             NEW_WALLPAPERS_LIST.append(wallpaper)
             ui.progress_dialog.setValue(int(((i+1)/7)*100))
-        # Delete older wallpapers
-        WallpaperManager.delete_older_wallpapers(NEW_WALLPAPERS_LIST)
+        # If all wallpapers downloaded then delete older wallpapers
+        print("New wallpapers " + str(len(NEW_WALLPAPERS_LIST)))
+        if len(NEW_WALLPAPERS_LIST)==8:
+            WallpaperManager.delete_older_wallpapers(NEW_WALLPAPERS_LIST)
         # Setting wallpaper
         WallpaperManager.set_wallpaper(NEW_WALLPAPERS_LIST[0])
         ui.image_view.setPixmap(QtGui.QPixmap(f'{WALLPAPER_FOLDER_PATH}/{WallpaperManager.CURRENT_WALLPAPER}'))

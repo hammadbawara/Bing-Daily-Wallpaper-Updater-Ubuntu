@@ -42,8 +42,6 @@ def download(index=0):
                 print(colored("\n------ Make Sure you are connected to internet  ------.", "red"))
             if n == 50:
                 print(colored("------ Cannot able to make connection with server ------", "red"))
-                input("Press any key to exit..... ")
-                exit()
     os.system("clear")
     print(colored("\n------ SERVER CONNECTION SUCESSFUL ------)", "green"))
 
