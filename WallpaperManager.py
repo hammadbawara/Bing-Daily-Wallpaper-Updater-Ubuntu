@@ -48,7 +48,6 @@ def download(index=0):
     print(colored("\n------ SERVER CONNECTION SUCESSFUL ------)", "green"))
 
     # Making list from json response
-    print(response)
     response = json.loads(response.text)
 
     print(colored("\n------ DOWNLOADING WALLPAPER ------\n", "blue"))
@@ -159,3 +158,14 @@ def download_complete_week_wallpaper():
     for i in range(0, 7, -1):
         wallpaper = download(i)
     set_wallpaper(wallpaper)
+
+def delete_older_wallpapers(WALLPAPERS_LIST):
+    wallpapers_list = os.listdir(WALLPAPER_FOLDER_PATH)
+
+    # removing other files
+    for index, wallpaper in enumerate(wallpapers_list):
+        if wallpaper.endswith(".jpg") or wallpaper.endswith(".JPG"):
+            if not wallpaper in WALLPAPERS_LIST:
+                print(colored(f"Deleting {wallpaper}", "red"))
+                os.remove(f'{WALLPAPER_FOLDER_PATH}/{wallpaper}')
+
