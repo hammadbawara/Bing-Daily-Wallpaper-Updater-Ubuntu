@@ -20,8 +20,15 @@ with open(WALLPAPER_RECORD_FILE) as f:
     CURRENT_WALLPAPER = f.readline()
 
 
-def download():
-    api_url = "https://bing.biturl.top/?resolution=1920&format=json&index=0&mkt=zh-CN"
+def download(index=0):
+    """
+    Parameters
+    ----------
+    index : int, optional index is the day of image you want to download. e.g 0 mean day 1 and up to 7.
+    """
+
+    region = "en-US"
+    api_url = f"https://bing.biturl.top/?resolution=1920&format=json&index={index}&mkt={region}"
 
     print("-------Connecting to server-------")
     n = 0
@@ -41,6 +48,7 @@ def download():
     print(colored("\n------ SERVER CONNECTION SUCESSFUL ------)", "green"))
 
     # Making list from json response
+    print(response)
     response = json.loads(response.text)
 
     print(colored("\n------ DOWNLOADING WALLPAPER ------\n", "blue"))
@@ -144,3 +152,10 @@ def set_latest_wallpaper():
         set_wallpaper(wallpapers_list[0])
     else:
         print(colored("THERE IS NO DOWNLOADED WALLPAPER", "blue"))
+
+
+def download_complete_week_wallpaper():
+    wallpaper = ""
+    for i in range(0, 7, -1):
+        wallpaper = download(i)
+    set_wallpaper(wallpaper)

@@ -82,15 +82,13 @@ class UpdateWallpaper(QThread):
         QThread.__init__(self)
 
     def run(self):
-        ui.progress_dialog.setValue(10)
-        wallpaper = WallpaperManager.download()
-        ui.progress_dialog.setValue(50)
+        wallpaper = ""
+        for i in range(7, 0, -1):
+            wallpaper = WallpaperManager.download(i)
+            ui.progress_dialog.setValue(int(((8-i)/7)*100))
         WallpaperManager.set_wallpaper(wallpaper)
-        ui.progress_dialog.setValue(100)
         ui.image_view.setPixmap(QtGui.QPixmap(f'{WALLPAPER_FOLDER_PATH}/{WallpaperManager.CURRENT_WALLPAPER}'))
         ui.progress_dialog.close()
-
-
 
 
 if __name__ == "__main__":
