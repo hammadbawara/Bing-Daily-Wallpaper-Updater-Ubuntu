@@ -9,8 +9,15 @@ from tqdm import tqdm
 WALLPAPER_FOLDER_PATH = f"/home/{os.getlogin()}/.wallpapers"
 WALLPAPER_RECORD_FILE = f'{WALLPAPER_FOLDER_PATH}/current_wallpaper.txt'
 
+CURRENT_WALLPAPER = ""
+
 if not os.path.isdir(WALLPAPER_FOLDER_PATH):
     os.mkdir(WALLPAPER_FOLDER_PATH)
+if not os.path.isfile(WALLPAPER_RECORD_FILE):
+    with open(WALLPAPER_RECORD_FILE, "w") as f:
+        f.write("defualt.png")
+with open(WALLPAPER_RECORD_FILE) as f:
+    CURRENT_WALLPAPER = f.readline()
 
 
 def download():
@@ -68,6 +75,8 @@ def set_wallpaper(wallpaper_file_name: str):
     os.system(f"gsettings set org.gnome.desktop.background picture-uri 'file://{wallpaper_image_path}'")
 
     print(colored("WALLPAPER SET : " + wallpaper_file_name, "green"))
+    global CURRENT_WALLPAPER
+    CURRENT_WALLPAPER = wallpaper_file_name
 
     with open(WALLPAPER_RECORD_FILE, "w") as f:
         f.write(wallpaper_file_name)

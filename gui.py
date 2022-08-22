@@ -1,5 +1,7 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
 import os
+import WallpaperManager
+
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 CURRENT_WALLPAPER_PATH = f"/home/{os.getlogin()}/.wallpapers/current_wallpaper.txt"
 WALLPAPER_FOLDER_PATH = f"/home/{os.getlogin()}/.wallpapers/"
@@ -17,7 +19,7 @@ class Ui_MainWindow(object):
         self.image_view.setScaledContents(True)
         self.image_view.setObjectName("image_view")
 
-        self.image_view.setPixmap(QtGui.QPixmap(f'{WALLPAPER_FOLDER_PATH}/{self.current_wallpaper}'))
+        self.image_view.setPixmap(QtGui.QPixmap(f'{WALLPAPER_FOLDER_PATH}/{WallpaperManager.CURRENT_WALLPAPER}'))
 
         self.nextBtn = QtWidgets.QPushButton(self.centralwidget)
         self.nextBtn.setGeometry(QtCore.QRect(610, 510, 150, 50))
@@ -42,30 +44,17 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def update_and_set_wallpaper(self):
-        os.system("python3 main.py -ds ")
-        with open(CURRENT_WALLPAPER_PATH) as f:
-            self.current_wallpaper = f.readline()
-        self.image_view.setPixmap(QtGui.QPixmap(f'{WALLPAPER_FOLDER_PATH}/{self.current_wallpaper}'))
+        wallpaper = WallpaperManager.download()
+        WallpaperManager.set_wallpaper(wallpaper)
+        self.image_view.setPixmap(QtGui.QPixmap(f'{WALLPAPER_FOLDER_PATH}/{wallpaper}'))
 
     def next_wallpaper(self):
-        os.system("python3 main.py -next")
-        with open(CURRENT_WALLPAPER_PATH) as f:
-            self.current_wallpaper = f.readline()
-        self.image_view.setPixmap(QtGui.QPixmap(f'{WALLPAPER_FOLDER_PATH}/{self.current_wallpaper}'))
+        WallpaperManager.set_next_wallpaper()
+        self.image_view.setPixmap(QtGui.QPixmap(f'{WALLPAPER_FOLDER_PATH}/{WallpaperManager.CURRENT_WALLPAPER}'))
 
     def prev_wallpaper(self):
-        os.system("python3 main.py -prev")
-        with open(CURRENT_WALLPAPER_PATH) as f:
-            self.current_wallpaper = f.readline()
-        self.image_view.setPixmap(QtGui.QPixmap(f'{WALLPAPER_FOLDER_PATH}/{self.current_wallpaper}'))
-
-
-    def __init__(self):
-        if not os.path.isfile(CURRENT_WALLPAPER_PATH):
-            with open(CURRENT_WALLPAPER_PATH, "w") as f:
-                f.write("default.jpg")
-        with open(CURRENT_WALLPAPER_PATH) as f:
-            self.current_wallpaper = f.readline()
+        WallpaperManager.set_next_wallpaper(True)
+        self.image_view.setPixmap(QtGui.QPixmap(f'{WALLPAPER_FOLDER_PATH}/{WallpaperManager.CURRENT_WALLPAPER}'))
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
