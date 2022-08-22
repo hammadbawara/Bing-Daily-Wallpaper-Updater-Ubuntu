@@ -10,9 +10,7 @@ Bing Daily Wallpaper Updator is a software that update wallpaper daily. You can 
 
 ![Screenshot 1](https://user-images.githubusercontent.com/51308210/185895834-c832da30-040b-47c9-b2e6-e375ca5352f1.png)
 
-![Screenshot 2](https://user-images.githubusercontent.com/51308210/185912988-8853a426-42a0-4433-98b0-9b7093c7ec0f.png)
-
-![Screenshot from 2022-08-22 16-45-31](https://user-images.githubusercontent.com/51308210/185913840-6dc0ef02-4ab0-48a2-880f-b0f40bcbab64.png)
+![Screenshot 2](https://user-images.githubusercontent.com/51308210/185913840-6dc0ef02-4ab0-48a2-880f-b0f40bcbab64.png)
 
 ## API
 Api address : [https://bing.biturl.top](https://bing.biturl.top/)
