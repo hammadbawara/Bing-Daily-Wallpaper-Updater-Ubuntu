@@ -61,6 +61,9 @@ class Ui_MainWindow(object):
 
 
     def __init__(self):
+        if not os.path.isfile(CURRENT_WALLPAPER_PATH):
+            with open(CURRENT_WALLPAPER_PATH, "w") as f:
+                f.write("default.jpg")
         with open(CURRENT_WALLPAPER_PATH) as f:
             self.current_wallpaper = f.readline()
 
