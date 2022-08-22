@@ -1,3 +1,5 @@
 wallpapers
 __pycache__
 .idea
+build
+dist
