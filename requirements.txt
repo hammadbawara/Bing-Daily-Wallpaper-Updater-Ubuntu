@@ -1,3 +1,4 @@
-termcolor~=1.1.0
-tqdm~=4.64.0
-requests~=2.28.1
+termcolor
+tqdm
+requests
+PyQt5

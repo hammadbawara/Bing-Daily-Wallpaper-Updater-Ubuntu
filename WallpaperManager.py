@@ -105,16 +105,16 @@ def set_next_wallpaper(previous=False):
         if wallpaper == current_wallpaper:
             is_current_wallpaper_found = True
             if previous == True:
-                if index == 0:
+                if index + 1 == len(wallpapers_list):
                     print(colored("THERE IS NO PREVIOUS WALLPAPER", "blue"))
                 else:
-                    set_wallpaper(wallpapers_list[index - 1])
+                    set_wallpaper(wallpapers_list[index + 1])
                     break
             else:
-                if index + 1 == len(wallpapers_list):
+                if index == 0:
                     print(colored("THERE IS NO NEXT WALLPAPER", "blue"))
                 else:
-                    set_wallpaper(wallpapers_list[index + 1])
+                    set_wallpaper(wallpapers_list[index - 1])
                     break
 
     if not is_current_wallpaper_found:

@@ -15,9 +15,12 @@ if os.getenv('DESKTOP_SESSION') != 'ubuntu':
 
 args = sys.argv
 
-if len(args) == 1:
-    file_name = wm.download()
-    wm.set_wallpaper(file_name)
+if __name__ == '__main__':
+    if len(args) == 1:
+        file_name = wm.download()
+        wm.set_wallpaper(file_name)
+        exit()
+else:
     exit()
 
 if args[1] == '-h' or args[1] == '--help':
@@ -27,6 +30,7 @@ if args[1] == '-h' or args[1] == '--help':
     print("-next, next -  Sets next wallpaper on Desktop")
     print("-prev, previous -  Sets previous wallpaper on Desktop")
     print("-l, latest -  Sets latest wallpaper on Desktop")
+    print("-sw, set-wallpaper - Set Wallpaper [FILE]")
     exit()
 
 elif args[1] == 'download' or args[1] == '-d':
@@ -47,6 +51,13 @@ elif args[1] == 'prev' or args[1] == "previous" or args[1] == '-prev':
 
 elif args[1] == 'latest' or args[1] == '-l':
     wm.set_latest_wallpaper()
+
+elif args[1] == 'set-wallpaper' or args[1] == '-sw':
+    if len(args) == 2:
+        wallpaper = args[2]
+        wm.set_wallpaper(wallpaper)
+    else:
+        print("set-wallpaper accepts only one file name more than one file name given.")
 
 else:
     print("option not found")
