@@ -114,6 +114,8 @@ def set_next_wallpaper(previous=False):
         if not wallpaper.endswith(".jpg") or wallpaper.endswith(".JPG"):
             wallpapers_list.pop(index)
 
+    wallpapers_list.sort(reverse=True)
+
     is_current_wallpaper_found = False
     for index, wallpaper in enumerate(wallpapers_list):
         if wallpaper == current_wallpaper:
