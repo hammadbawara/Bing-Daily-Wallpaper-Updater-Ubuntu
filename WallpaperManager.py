@@ -42,13 +42,12 @@ def download(index=0):
                 print(colored("\n------ Make Sure you are connected to internet  ------.", "red"))
             if n == 50:
                 print(colored("------ Cannot able to make connection with server ------", "red"))
-    os.system("clear")
     print(colored("\n------ SERVER CONNECTION SUCESSFUL ------)", "green"))
 
     # Making list from json response
     response = json.loads(response.text)
 
-    print(colored("\n------ DOWNLOADING WALLPAPER ------\n", "blue"))
+    print(colored(f"\n------ DOWNLOADING WALLPAPER ------{index+1}\n", "blue"))
     wallpaper_file_name = response['start_date'] + ".jpg"
 
     # check if wallpaper already exists
