@@ -31,17 +31,13 @@ def download(index=0):
     api_url = f"https://bing.biturl.top/?resolution=1920&format=json&index={index}&mkt={region}"
 
     print("-------Connecting to server-------")
-    n = 0
     while True:
         try:
             response = requests.get(api_url)
             break
         except Exception:
-            n += 1
-            if n == 1:
-                print(colored("\n------ Make Sure you are connected to internet  ------.", "red"))
-            if n == 50:
-                print(colored("------ Cannot able to make connection with server ------", "red"))
+            print(colored("\n------ FAILED TO CONNECT SERVER  ------.", "red"))
+            return ""
     print(colored("\n------ SERVER CONNECTION SUCESSFUL ------)", "green"))
 
     # Making list from json response
