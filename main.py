@@ -37,8 +37,15 @@ elif args[1] == 'download' or args[1] == '-d':
     wm.download()
 
 elif args[1] == '-ds' or args[1] == 'download-set' or args[1] == 'update-wallpaper' or args[1] == '-uw':
-    file_name = wm.download()
-    wm.set_wallpaper(file_name)
+    NEW_WALLPAPERS_LIST = []
+    for i in range(0, 8):
+        wallpaper = wm.download(i)
+        NEW_WALLPAPERS_LIST.append(wallpaper)
+    # If all wallpapers downloaded then delete older wallpapers
+    if len(NEW_WALLPAPERS_LIST)==8:
+        wm.delete_older_wallpapers(NEW_WALLPAPERS_LIST)
+    # Setting wallpaper
+    wm.set_wallpaper(NEW_WALLPAPERS_LIST[0])
 
 elif args[1] == 'set-random' or args[1] == '-sr':
     wm.set_random()

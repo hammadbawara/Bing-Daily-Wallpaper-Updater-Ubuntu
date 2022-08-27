@@ -146,6 +146,8 @@ def set_latest_wallpaper():
         if not wallpaper.endswith(".jpg") or wallpaper.endswith(".JPG"):
             wallpapers_list.pop(index)
 
+    wallpapers_list.sort()
+
     if len(wallpapers_list) > 0:
         set_wallpaper(wallpapers_list[0])
     else:
