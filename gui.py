@@ -21,7 +21,9 @@ class Ui_MainWindow(object):
         self.image_view.setScaledContents(True)
         self.image_view.setObjectName("image_view")
 
-        self.image_view.setPixmap(QtGui.QPixmap(f'{WALLPAPER_FOLDER_PATH}/{WallpaperManager.CURRENT_WALLPAPER}'))
+        print(WallpaperManager.CURRENT_WALLPAPER)
+
+        self.image_view.setPixmap(QtGui.QPixmap(os.path.join(WallpaperManager.WALLPAPER_FOLDER_PATH ,WallpaperManager.CURRENT_WALLPAPER)))
 
         self.nextBtn = QtWidgets.QPushButton(self.centralwidget)
         self.nextBtn.setGeometry(QtCore.QRect(610, 510, 150, 50))
@@ -92,6 +94,9 @@ class UpdateWallpaper(QThread):
             WallpaperManager.delete_older_wallpapers(NEW_WALLPAPERS_LIST)
         # Setting wallpaper
         WallpaperManager.set_wallpaper(NEW_WALLPAPERS_LIST[0])
+        # Updating record file
+        WallpaperManager.update_data_in_record_file(NEW_WALLPAPERS_LIST[0].split(".")[0], 2)
+
         ui.image_view.setPixmap(QtGui.QPixmap(f'{WALLPAPER_FOLDER_PATH}/{WallpaperManager.CURRENT_WALLPAPER}'))
         ui.progress_dialog.close()
 

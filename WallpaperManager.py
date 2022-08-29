@@ -4,6 +4,7 @@ import random
 import requests
 from termcolor import colored
 from tqdm import tqdm
+import datetime
 
 # Global Variables
 WALLPAPER_FOLDER_PATH = f"/home/{os.getlogin()}/.wallpapers"
@@ -15,9 +16,9 @@ if not os.path.isdir(WALLPAPER_FOLDER_PATH):
     os.mkdir(WALLPAPER_FOLDER_PATH)
 if not os.path.isfile(WALLPAPER_RECORD_FILE):
     with open(WALLPAPER_RECORD_FILE, "w") as f:
-        f.write("defualt.png")
+        f.write("wallpaper.png\n date")
 with open(WALLPAPER_RECORD_FILE) as f:
-    CURRENT_WALLPAPER = f.readline()
+    CURRENT_WALLPAPER = f.readline().strip()
 
 
 def download(index=0):
@@ -43,7 +44,7 @@ def download(index=0):
     # Making list from json response
     response = json.loads(response.text)
 
-    print(colored(f"\n------ DOWNLOADING WALLPAPER ------{index+1}\n", "blue"))
+    print(colored(f"\n------ DOWNLOADING WALLPAPER ------{index + 1}\n", "blue"))
     wallpaper_file_name = response['start_date'] + ".jpg"
 
     # check if wallpaper already exists
@@ -53,12 +54,15 @@ def download(index=0):
         return wallpaper_file_name
 
     # Downloading the wallpaper
-    with requests.get(response["url"], stream=True) as r:
-        r.raise_for_status()
-        with open(f'{WALLPAPER_FOLDER_PATH}/{wallpaper_file_name}', "wb") as image_file:
-            for chunk in tqdm(r.iter_content(chunk_size=1024)):
-                image_file.write(chunk)
-                image_file.flush()
+    try:
+        with requests.get(response["url"], stream=True) as r:
+            r.raise_for_status()
+            with open(f'{WALLPAPER_FOLDER_PATH}/{wallpaper_file_name}', "wb") as image_file:
+                for chunk in tqdm(r.iter_content(chunk_size=1024)):
+                    image_file.write(chunk)
+                    image_file.flush()
+    except:
+        return ""
 
     print(colored("\n------ WALLPAPER DOWNLOADED ------", "green"))
 
@@ -78,8 +82,7 @@ def set_wallpaper(wallpaper_file_name: str):
     global CURRENT_WALLPAPER
     CURRENT_WALLPAPER = wallpaper_file_name
 
-    with open(WALLPAPER_RECORD_FILE, "w") as f:
-        f.write(wallpaper_file_name)
+    update_data_in_record_file(wallpaper_file_name, 1)
 
 
 def set_random():
@@ -90,12 +93,13 @@ def set_random():
 
 def set_next_wallpaper(previous=False):
     if not os.path.isfile(WALLPAPER_RECORD_FILE):
-        print(colored("CURRENT WALLPAPER DOES NOT EXIST", "red"))
+        print(colored("RECORD FILE DOES NOT EXIST", "red"))
         set_latest_wallpaper()
         return
 
     with open(WALLPAPER_RECORD_FILE) as f:
-        current_wallpaper = f.readline()
+        current_wallpaper = f.readline().strip()
+        print(current_wallpaper)
 
     if current_wallpaper == "":
         print(colored("CURRENT WALLPAPER DOES NOT EXIST", "red"))
@@ -142,7 +146,7 @@ def set_latest_wallpaper():
         if not wallpaper.endswith(".jpg") or wallpaper.endswith(".JPG"):
             wallpapers_list.pop(index)
 
-    wallpapers_list.sort()
+    wallpapers_list.sort(reverse=True)
 
     if len(wallpapers_list) > 0:
         set_wallpaper(wallpapers_list[0])
@@ -156,6 +160,7 @@ def download_complete_week_wallpaper():
         wallpaper = download(i)
     set_wallpaper(wallpaper)
 
+
 def delete_older_wallpapers(WALLPAPERS_LIST):
     wallpapers_list = os.listdir(WALLPAPER_FOLDER_PATH)
 
@@ -166,3 +171,45 @@ def delete_older_wallpapers(WALLPAPERS_LIST):
                 print(colored(f"Deleting {wallpaper}", "red"))
                 os.remove(f'{WALLPAPER_FOLDER_PATH}/{wallpaper}')
 
+
+def is_today_wallpaper_downloaded():
+    """This function check whether today wallpaper already downloaded or not"""
+    # Check whether today wallpaper downloaded or not
+    with open(os.path.join(WALLPAPER_FOLDER_PATH, "current_wallpaper.txt")) as f:
+        try:
+            date_of_last_downloading = f.readlines()[1].strip()
+        except:
+            print(colored("DATE OF LAST DOWNLOADING NOT FOUND", "red"))
+            return False
+
+    today_date = datetime.datetime.now().strftime("%Y%m%d")
+
+    return str(date_of_last_downloading) == str(today_date)
+
+
+def update_data_in_record_file(string: str, line: int):
+    """
+    This function update data in record file Parameters
+    -----------------------------
+    string - Record to store line -
+    line - number where record will store.
+            1 for saving 'current wallpaper'.
+            2 for saving 'last date of wallpaper downloaded'
+    """
+    with open(WALLPAPER_RECORD_FILE) as f:
+        data = f.readlines()
+
+    if len(data) != 2:
+        with open(WALLPAPER_RECORD_FILE, "w") as f:
+            f.write("current_wallpaper.png\ndownloaded_wallpaper_date")
+        with open(WALLPAPER_RECORD_FILE) as f:
+            data = f.readlines()
+
+    data[line - 1] = string
+
+    with open(WALLPAPER_RECORD_FILE, "w") as f:
+        for i in data:
+            if i.endswith("\n"):
+                f.write(i)
+            else:
+                f.write(i + "\n")
