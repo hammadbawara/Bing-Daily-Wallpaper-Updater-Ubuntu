@@ -1,9 +1,11 @@
 #!/usr/bin/python3
 
-import WallpaperManager as wm
 import os
-from termcolor import colored
 import time
+
+from termcolor import colored
+
+import WallpaperManager as wm
 
 FILES_LIST_BEFORE_DOWNLOADING = os.listdir(wm.WALLPAPER_FOLDER_PATH)
 

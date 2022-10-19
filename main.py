@@ -1,7 +1,10 @@
+#!/usr/bin/python3
 import os
 import sys
-import WallpaperManager as wm
+
 from termcolor import colored
+
+import WallpaperManager as wm
 
 # checking operating system if it is linux then use linux then run the script 
 if os.name != 'posix':
@@ -9,10 +12,19 @@ if os.name != 'posix':
     exit()
 
 # checking if Desktop environment is gnome then run the script
-if os.getenv('DESKTOP_SESSION') != 'ubuntu':
-    print(colored('[-] This program is not tested for this distro.', 'red'))
+try:
+    DESKTOP_ENVRIONMENT = os.getenv("XDG_CURRENT_DESKTOP").split(":")[1]
+    if DESKTOP_ENVRIONMENT != 'GNOME':
+        print(colored(f'This software is build for GNOME. And you are using {DESKTOP_ENVRIONMENT}.\n'+
+                'This software may not work for your Desktop Enviroment.\n'))
+        print("Do you really want to continue? (y/N):")
+        response = input()
+        if response not in ["Yes", "Y", "y", "yes"]:
+            print('Program is quited')
+            exit()
+except:
+    print(colored('[-] Something went wrong while getting Desktop Environment'), 'red')
     exit()
-
 args = sys.argv
 
 if __name__ == '__main__':
@@ -24,6 +36,8 @@ else:
     exit()
 
 if args[1] == '-h' or args[1] == '--help':
+    print("[OPTION]")
+    print("\nOptions:")
     print("-d, download  -  Downloads the wallpaper the today wallpaper")
     print("-ds, download-set, update-wallpaper, -uw -  Downloads and sets the wallpaper the today wallpaper")
     print("-sr, set-random -  Sets random wallpaper on Desktop")
@@ -42,8 +56,8 @@ elif args[1] == '-ds' or args[1] == 'download-set' or args[1] == 'update-wallpap
         wallpaper = wm.download(i)
         NEW_WALLPAPERS_LIST.append(wallpaper)
     # If all wallpapers downloaded then delete older wallpapers
-    if len(NEW_WALLPAPERS_LIST)==8:
-        wm.delete_older_wallpapers(NEW_WALLPAPERS_LIST)
+    # if len(NEW_WALLPAPERS_LIST)==8:
+        # wm.delete_older_wallpapers(NEW_WALLPAPERS_LIST)
     # Setting wallpaper
     wm.set_wallpaper(NEW_WALLPAPERS_LIST[0])
 

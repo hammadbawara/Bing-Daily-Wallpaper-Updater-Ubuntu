@@ -1,10 +1,11 @@
+import datetime
 import json
 import os
 import random
+
 import requests
 from termcolor import colored
 from tqdm import tqdm
-import datetime
 
 # Global Variables
 WALLPAPER_FOLDER_PATH = f"/home/{os.getlogin()}/.wallpapers"
